@@ -39,37 +39,50 @@ int main(int argc, char* argv[]) {
     uint64_t c2 = DEFAULT_C2;
     uint64_t b2 = DEFAULT_B2;
     uint64_t s2 = DEFAULT_S2;
+    uint64_t c3 = DEFAULT_C3;
+    uint64_t b3 = DEFAULT_B3;
+    uint64_t s3 = DEFAULT_S3;
+
     uint64_t v = DEFAULT_V;
 
     /* Read arguments */
-    while(-1 != (opt = getopt(argc, argv, "c:b:s:v:C:B:S:h"))) {
+    while(-1 != (opt = getopt(argc, argv, "c:b:s:v:C:B:S:E:F:G:h"))) {
         switch(opt) {
-        case 'c':
-            c1 = atoi(optarg);
-            break;
-        case 'b':
-            b1 = atoi(optarg);
-            break;
-        case 's':
-            s1 = atoi(optarg);
-            break;
-        case 'v':
-            v = atoi(optarg);
-            break;
-        case 'C':
-            c2 = atoi(optarg);
-            break;
-        case 'B':
-            b2 = atoi(optarg);
-            break;
-        case 'S':
-            s2 = atoi(optarg);
-            break;
-        case 'h':
-            /* Fall through */
-        default:
-            print_help_and_exit();
-            break;
+            case 'c':
+                c1 = atoi(optarg);
+                break;
+            case 'b':
+                b1 = atoi(optarg);
+                break;
+            case 's':
+                s1 = atoi(optarg);
+                break;
+            case 'v':
+                v = atoi(optarg);
+                break;
+            case 'C':
+                c2 = atoi(optarg);
+                break;
+            case 'B':
+                b2 = atoi(optarg);
+                break;
+            case 'S':
+                s2 = atoi(optarg);
+                break;
+            case 'E':
+                c3 = atoi(optarg);
+                break;
+            case 'F':
+                b3 = atoi(optarg);
+                break;
+            case 'G':
+                s3 = atoi(optarg);
+                break;
+            case 'h':
+                /* Fall through */
+            default:
+                print_help_and_exit();
+                break;
         }
     }
 
@@ -81,10 +94,13 @@ int main(int argc, char* argv[]) {
     printf("C: %" PRIu64 "\n", c2);
     printf("B: %" PRIu64 "\n", b2);
     printf("S: %" PRIu64 "\n", s2);
+    printf("E: %" PRIu64 "\n", c3);
+    printf("F: %" PRIu64 "\n", b3);
+    printf("G: %" PRIu64 "\n", s3);
     printf("\n");
 
     /* Setup the cache */
-    setup_cache(c1, b1, s1, v, c2, b2, s2);
+    setup_cache(c1, b1, s1, v, c2, b2, s2, c3, b3, s3);
 
     /* Setup statistics */
     cache_stats_t stats;
@@ -122,5 +138,7 @@ void print_statistics(cache_stats_t* p_stats) {
     printf("Write backs from L2: %" PRIu64 "\n", p_stats->write_back_l2);
     printf("L1 victims hit in victim cache: %" PRIu64 "\n", p_stats->victim_hits);
     printf("Average access time (AAT) for L1: %f\n", p_stats->avg_access_time_l1);
+    printf("Average access time (AAT) for L2: %f\n", p_stats->avg_access_time_l2);
+    printf("Average access time (AAT) for L3: %f\n", p_stats->avg_access_time_l3);
 }
 
